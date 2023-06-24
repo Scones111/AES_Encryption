@@ -71,7 +71,10 @@ def Pad(message):
 # DePadding function
 def unPad(message):
     pad_no = int(message[-1])
-    return message[0:len(message)-pad_no]
+    if pad_no < 16 and int(message[-pad_no]) == pad_no:
+        return message[0:len(message)-pad_no]
+    else:
+        return message
 
 def generate_IV():
     IV = np.random.randint(0, high=255, size=16, dtype=np.uint8)
@@ -195,9 +198,9 @@ def read_key():
 
 def key_expansion(key, rounds, block_size):
     nk = int(len(key) * 8 / 32)  # Number of 32-bit words comprising the cypher key
-    wcount = int((rounds + 1) * block_size / nk)
-    rcon = np.zeros((wcount, 4), dtype=np.uint8)
-    for i in range(wcount):
+    rconCount = int((rounds + 1) * block_size / nk)
+    rcon = np.zeros((rconCount, 4), dtype=np.uint8)
+    for i in range(rconCount):
         if i == 0:
             rcon[i] = np.array([1, 0, 0, 0], dtype=np.uint8)
         else:
