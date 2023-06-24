@@ -143,9 +143,9 @@ def CBC_encrypt(plain_text):
         cipher_block = cypher(message_xored, Transformations.read_key())
         IV = bytearray(cipher_block)
         cypher_text.extend(cipher_block)
-    
     return bytes(cypher_text)
-    
+
+
 def CBC_decrypt(cypher_text):
     plain_text = bytearray()
     cypher_text = bytearray(cypher_text)
